@@ -139,7 +139,7 @@ sequenceDiagram
     participant reCAPTCHA
     participant Origin
     Client->>VCL: GET (w/o session cookie)
-    VCL->>VCL: Forward high-risk request to C@E
+    VCL->>VCL: Determine high-risk request or not<br/>Forward high-risk request to C@E
     VCL->>C@E: GET
     C@E->>VCL: Challenge page
     VCL->>Client: Challenge page
