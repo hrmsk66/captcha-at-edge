@@ -1,6 +1,8 @@
 # CAPTCHA at the edge (JavaScript)
 
-Present clients with a CAPTCHA challenge to verify that they are not a bot. This C@E app is intended to be used as a backend to the VCL service; the VCL service should be configured to forward high-risk requests to this app for validation.
+Present clients with a CAPTCHA challenge to verify that they are not a bot. This C@E app is intended to be used as a backend to a VCL service; the VCL service should be configured to forward high-risk requests to this app for validation.
+
+![captcha_mini](https://user-images.githubusercontent.com/30490956/180640532-e10ad0da-b2da-4da3-96d0-37601bb8c654.jpg)
 
 ## Prerequisites
 
@@ -126,3 +128,31 @@ SUCCESS: Deployed package (service XXXXX, version 1)
 - **token_lifetime**: Token lifetime (seconds)
 
 4. To finish up and deploy your service click on the **Activate** button.
+
+## Sequence
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant VCL
+    participant C@E
+    participant reCAPTCHA
+    participant Origin
+    Client->>VCL: GET (w/o session cookie)
+    VCL->>VCL: Forward high-risk request to C@E
+    VCL->>C@E: GET
+    C@E->>VCL: Challenge page
+    VCL->>Client: Challenge page
+    Client->>VCL: Challenge response
+    VCL->>C@E: Challenge response
+    C@E->>reCAPTCHA: request verification
+    reCAPTCHA->>C@E: verified (success)
+    C@E->>C@E: Generate a session-token
+    C@E->>VCL: Sends the session-token as a cookie
+    VCL->>Client: Sends the session-token as a cookie
+    Client->>VCL: GET (w/ session cookie)
+    VCL->>VCL: Validate the token and token expiration (success)
+    VCL->>Origin: Allowed to access content
+    Origin->>VCL: Content
+    VCL->>Client: Content
+```
