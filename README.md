@@ -4,10 +4,13 @@ Present clients with a CAPTCHA challenge to verify that they are not a bot. This
 
 ## Prerequisites
 
-This app uses Google reCAPTCHA V2. To start using reCAPTCHA, you need to register your domain at https://www.google.com/recaptcha/admin and:
+This app uses Google reCAPTCHA V2. To start using reCAPTCHA, you need to sign up for an API key pair for your site.
+
+Go to https://www.google.com/recaptcha/admin and:
 
 - Get an API key pair. The key pair consists of a site key and a secret key
 - Register target domains
+- Register `127.0.0.1` as domain (For local testing)
 
 _It is not necessary to register each subdomain. A registration for `example.com` also registers `subdomain.example.com`_
 
