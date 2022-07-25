@@ -92,7 +92,7 @@ Log: It's a pass! returning a response with a token set in the session cookie <<
 1. Once you’re happy with your code and want to deploy the project to Fastly, run `fastly compute publish`.
 2. At the prompts, provide details about the service you're creating:
 
-- **Domain**: Press enter to accept the automatically generated domain name or enter the name of the domain you'd like to associate with your service.
+- **Domain**: Press enter to accept the automatically generated domain name or enter the name of the domain you'd like to associate with your service (e.g. **{company-name}-captcha.edgecompute.app**)
 - **Backend**: Create a host that has the hostname of `www.google.com`, enter `443` for the port number and name it **captcha_backend**.
 
 ```
