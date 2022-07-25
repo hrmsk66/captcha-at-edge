@@ -1,4 +1,4 @@
-# CAPTCHA at the edge (JavaScript)
+# CAPTCHA at the edge
 
 Present clients with a CAPTCHA challenge to verify that they are not a bot. This C@E app is intended to be used as a backend to a VCL service; the VCL service should be configured to forward high-risk requests to this app for validation.
 
