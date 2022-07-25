@@ -16,6 +16,13 @@ Go to https://www.google.com/recaptcha/admin and:
 
 _It is not necessary to register each subdomain. A registration for `example.com` also registers `subdomain.example.com`_
 
+### Limitations of reCAPTCHA
+
+In addition to the terms of service, please be aware of the limitation below.
+
+> If you wish to make more than 1000 calls per second or 1000000 calls per month, you must use reCAPTCHA Enterprise or fill out this form and wait for an exception approval. [Link](https://developers.google.com/recaptcha/docs/faq#are-there-any-qps-or-daily-limits-on-my-use-of-recaptcha)
+
+
 ## Installation
 
 ### Create a new Compute@Edge project
@@ -40,7 +47,7 @@ The generated value is used in step 2. The value is also to be added to the dict
 
 2. Open `fastly.toml` and replace the values of **shared_secret** and **recaptcha_secret_key** respectively. Optionally, change **token_lifetime** (in seconds)
 
-Example:
+Example (_the example reCAPTCHA keys have already been deactivated_):
 
 ```toml
 [local_server.dictionaries.captcha_config.contents]
@@ -51,7 +58,7 @@ Example:
 
 3. Open `src/captcha-challenge-fastly.html` and replace **{your-site-key}** with your reCAPTCHA site key.
 
-Example:
+Example (_the example reCAPTCHA keys have already been deactivated_):
 
 ```html
 <form action="?captcha=true" method="POST">
