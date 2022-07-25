@@ -17,4 +17,4 @@ service_id = ""
     [local_server.dictionaries.captcha_config.contents]
       "shared_secret" = "XXX"
       "recaptcha_secret_key" = "XXX"
-      "token_lifetime" = "60"
+      "token_lifetime" = "86400"

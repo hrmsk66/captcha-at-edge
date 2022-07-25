@@ -129,9 +129,11 @@ SUCCESS: Deployed package (service XXXXX, version 1)
 
 3. Once the project is deployed successfully, go to the Fastly service page, click `Edit configuration`, and select `Clone version 1` to edit. Go to Dictionaries and create a new dictionary named `captcha_config`. Add the following items in the dictionary:
 
-- **shared_secret**: The shared secret you created with the openssl command
-- **recaptcha_secret_key**: Your reCAPTCHA secret key
-- **token_lifetime**: Token lifetime (in seconds)
+| Key                  | Description                                            |
+| -------------------- | ------------------------------------------------------ |
+| shared_secret        | The shared secret you created with the openssl command |
+| recaptcha_secret_key | Your reCAPTCHA secret key                              |
+| token_lifetime       | Token lifetime (in seconds)                            |
 
 4. To finish up and deploy your service click on the **Activate** button.
 

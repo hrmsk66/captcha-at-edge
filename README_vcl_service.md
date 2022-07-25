@@ -70,4 +70,6 @@ if (fastly.ff.visits_this_service == 0 && req.request != "FASTLYPURGE") {
 
 4. Create a new dictionary named `captcha_config`. Add the following entry to the dictionary.
 
-- shared_secret: The shared secret. It must be the same as the one set in the C@E application.
+| Key           | Description                                                          |
+| ------------- | -------------------------------------------------------------------- |
+| shared_secret | The shared secret. It must be the same as the one set in the C@E app |
