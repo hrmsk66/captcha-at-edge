@@ -22,7 +22,6 @@ In addition to the terms of service, please be aware of the limitation below.
 
 > If you wish to make more than 1000 calls per second or 1000000 calls per month, you must use reCAPTCHA Enterprise or fill out this form and wait for an exception approval. [Link](https://developers.google.com/recaptcha/docs/faq#are-there-any-qps-or-daily-limits-on-my-use-of-recaptcha)
 
-
 ## Installation
 
 ### Create a new Compute@Edge project
@@ -132,7 +131,7 @@ SUCCESS: Deployed package (service XXXXX, version 1)
 
 - **shared_secret**: The shared secret you created with the openssl command
 - **recaptcha_secret_key**: Your reCAPTCHA secret key
-- **token_lifetime**: Token lifetime (seconds)
+- **token_lifetime**: Token lifetime (in seconds)
 
 4. To finish up and deploy your service click on the **Activate** button.
 

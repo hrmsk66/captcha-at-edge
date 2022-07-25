@@ -8,7 +8,7 @@ async function handleRequest(event) {
   let req = event.request;
   const local = fastly.env.get("FASTLY_HOSTNAME") === "localhost";
 
-  // If testing locally, add the x-orig-host header with a dummy domain to skip header validation in the next if-block
+  // If testing locally, add the x-orig-host header with a dummy domain to skip the header validation in the next if-block
   if (local) {
     req.headers.set("x-orig-host", "example.com");
   }
@@ -56,8 +56,8 @@ async function handleRequest(event) {
   return new Response(body, { status: 200, headers });
 }
 
-// Reference page for token validation
-// https://docs.fastly.com/en/guides/enabling-url-token-validation
+// The token generation logic is based on the content of this page
+// https://docs.fastly.com/en/guides/enabling-url-token-validation#configuring-your-application
 //
 // Generate token from domain name and token expiration time
 function generateToken(tokenLifetime, sharedSecret, domainName) {
@@ -75,7 +75,7 @@ function generateToken(tokenLifetime, sharedSecret, domainName) {
 }
 
 async function handleCaptchaRequest(req, secretKey) {
-  // Extract the user's response token from the POST body and verify it with the reCAPTCHA API.
+  // Extract the user's response from the POST body and verify it with the reCAPTCHA API.
   const body = await req.text();
   const captcha = body.split("=")[1];
   const captchaURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}`;
