@@ -135,6 +135,10 @@ SUCCESS: Deployed package (service XXXXX, version 1)
 
 4. To finish up and deploy your service click on the **Activate** button.
 
+### Setting up the VCL service
+
+See [Link](https://github.com/hrmsk66/captcha-at-edge/blob/main/README_vcl_service.md).
+
 ## Sequence
 
 ```mermaid
