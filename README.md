@@ -1,6 +1,6 @@
 # CAPTCHA at the edge
 
-Present clients with a CAPTCHA challenge to verify that they are not a bot. This C@E app is intended to be used as a backend to a VCL service; the VCL service should be configured to forward high-risk requests to this app for validation.
+Present clients with a CAPTCHA challenge to verify that they are not a bot. This Compute@Edge app is intended to be used as a backend to a VCL service; the VCL service should be configured to forward high-risk requests to this app for validation.
 
 ![captcha_mini](https://user-images.githubusercontent.com/30490956/180640532-e10ad0da-b2da-4da3-96d0-37601bb8c654.jpg)
 
