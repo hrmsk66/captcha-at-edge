@@ -141,17 +141,19 @@ SUCCESS: Deployed package (service XXXXX, version 1)
 
 See [Link](https://github.com/hrmsk66/captcha-at-edge/blob/main/README_vcl_service.md).
 
-## Sequence
+## Sequence / Determined to be a high-risk request by VCL
 
 ```mermaid
 sequenceDiagram
+autonumber
     participant Client
     participant VCL
     participant C@E
     participant reCAPTCHA
+    participant NGWAF
     participant Origin
     Client->>VCL: Request without session cookie
-    VCL->>VCL: Determine high-risk request or not<br/>Forward high-risk request to C@E
+    VCL->>VCL: Determined to be a high-risk request<br/>Forwarding it to C@E
     VCL->>C@E: Request without session cookie
     C@E->>VCL: Challenge page
     VCL->>Client: Challenge page
@@ -164,7 +166,64 @@ sequenceDiagram
     VCL->>Client: Sends the session-token as a cookie
     Client->>VCL: Request with session cookie
     VCL->>VCL: Validate the token and token expiration (success)
-    VCL->>Origin: Allowed to access content
-    Origin->>VCL: Content
-    VCL->>Client: Content
+    VCL->>NGWAF: Allowed to access content
+    NGWAF->>Origin: Request
+    Origin->>NGWAF: Response
+    NGWAF->>VCL: Response
+    VCL->>Client: Response
+```
+
+## Sequence / Determined to be a high-risk request by NGWAF
+
+```mermaid
+sequenceDiagram
+autonumber
+    participant Client
+    participant VCL
+    participant NGWAF
+    participant C@E
+    participant reCAPTCHA
+    participant Origin
+    Client->>VCL: Request w/o session cookie
+    VCL->>VCL: Not a high-risk request
+    VCL->>NGWAF: Request w/o session cookie
+    NGWAF->>NGWAF: Determined to be a high-risk request based on the IP reputation DB<br/>Returning response with special status code (e.g. 499)
+    NGWAF->>VCL: Response (499)
+    VCL->>VCL: Detect 499 and restart<br/>Forwarding it to C@E
+    VCL->>C@E: Request without session cookie
+    C@E->>VCL: Challenge page
+    VCL->>Client: Challenge page
+    Client->>VCL: Challenge response
+    VCL->>C@E: Challenge response
+    C@E->>reCAPTCHA: request verification
+    reCAPTCHA->>C@E: verified (success)
+    C@E->>C@E: Generate a session-token
+    C@E->>VCL: Sends the session-token as a cookie
+    VCL->>Client: Sends the session-token as a cookie
+    Client->>VCL: Request with session cookie
+    VCL->>VCL: Validate the token and token expiration (success)
+    VCL->>NGWAF: Allowed to access content
+    NGWAF->>NGWAF: Detect session cookie and allow access
+    NGWAF->>Origin: Request
+    Origin->>NGWAF: Response
+    NGWAF->>VCL: Response
+    VCL->>Client: Response
+```
+
+## Sequence / a low-risk request
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant VCL
+    participant NGWAF
+    participant Origin
+    Client->>VCL: Request
+    VCL->>VCL: Not a high-risk request
+    VCL->>NGWAF: Request
+    NGWAF->>NGWAF: Not a high-risk request
+    NGWAF->>Origin: Request
+    Origin->>NGWAF: Response
+    NGWAF->>VCL: Response
+    VCL->>Client: Response
 ```
