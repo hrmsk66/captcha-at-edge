@@ -166,7 +166,7 @@ autonumber
     VCL->>Client: Sends the session-token as a cookie
     Client->>VCL: Request with session cookie
     VCL->>VCL: Validate the token and token expiration (success)
-    VCL->>NGWAF: Allowed to access content
+    VCL->>NGWAF: Request with session cookie
     NGWAF->>Origin: Request
     Origin->>NGWAF: Response
     NGWAF->>VCL: Response
@@ -202,7 +202,7 @@ autonumber
     VCL->>Client: Sends the session-token as a cookie
     Client->>VCL: Request with session cookie
     VCL->>VCL: Validate the token and token expiration (success)
-    VCL->>NGWAF: Allowed to access content
+    VCL->>NGWAF: Request with session cookie
     NGWAF->>NGWAF: Detect session cookie and allow access
     NGWAF->>Origin: Request
     Origin->>NGWAF: Response
