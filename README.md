@@ -10,7 +10,7 @@ This app uses Google reCAPTCHA V2 or hCaptcha or both, you need to sign up for a
 
 - Get an API key pair. The key pair consists of a site key and a secret key
 - Register target domains
-- Register `127.0.0.1` as domain for local testing (This seems unnecessary for hcaptcha)
+- Register `127.0.0.1` as domain for local testing (This seems unnecessary for an hCaptcha account)
 
 _It is not necessary to register each subdomain. A registration for `example.com` also registers `subdomain.example.com`_
 
