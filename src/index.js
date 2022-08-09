@@ -1,6 +1,7 @@
 import { Buffer } from "buffer";
 import crypto from "crypto";
-import captchaPage from "./captcha-challenge-fastly.html";
+import generateChallengePage from "./challenge-page";
+import staticParams from "./static-params";
 
 addEventListener("fetch", (event) => event.respondWith(handleRequest(event)));
 
@@ -20,20 +21,27 @@ async function handleRequest(event) {
     });
   }
 
+  // Use different CAPTCHA accounts on odd and even days. n is the account number
+  const captchaConfig = new Dictionary("captcha_config");
+  const numOfAccounts = captchaConfig.get("number_of_accounts");
+  const n = new Date().getDate() % numOfAccounts;
+  const captchaType = captchaConfig.get(`account${n}_type`);
+  const staticParam = staticParams[captchaType];
+
+  // Check if the request is a challenge
   let url = new URL(req.url);
   const isChallenge = url.searchParams.has("captcha");
-
   if (req.method === "POST" && isChallenge) {
-    const captchaConfig = new Dictionary("captcha_config");
-    const secretKey = captchaConfig.get("recaptcha_secret_key");
-    const isPass = await handleCaptchaRequest(req, secretKey);
+    // Verify the challenge with the CAPTCHA API.
+    const secret = captchaConfig.get(`account${n}_secret_key`);
+    const isPass = await handleCaptchaRequest(req, secret, staticParam);
 
     if (isPass) {
-      console.log("It's a pass! returning a response with a token set in the session cookie");
       // It's a pass! Set a cookie, so that this user is not challenged again within the token lifetime
       // If isPass is false, fall through to the remainder of the function and redisplay the CAPTCHA page
+      console.log("It's a pass! returning a response with a token set in the session cookie");
 
-      // Get params and generate token
+      // Generate token
       const tokenLifetime = captchaConfig.get("token_lifetime");
       const sharedSecret = captchaConfig.get("shared_secret");
       const domainName = req.headers.get("x-orig-host");
@@ -52,7 +60,9 @@ async function handleRequest(event) {
   // Return the CAPTCHA page
   let headers = new Headers();
   headers.set("Content-Type", "text/html; charset=utf-8");
-  let body = captchaPage;
+
+  const siteKey = captchaConfig.get(`account${n}_site_key`);
+  let body = generateChallengePage(siteKey, staticParam);
   return new Response(body, { status: 200, headers });
 }
 
@@ -74,20 +84,30 @@ function generateToken(tokenLifetime, sharedSecret, domainName) {
   return token;
 }
 
-async function handleCaptchaRequest(req, secretKey) {
-  // Extract the user's response from the POST body and verify it with the reCAPTCHA API.
-  const body = await req.text();
-  const captcha = body.split("=")[1];
-  const captchaURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captcha}`;
-  const captchaReq = new Request(captchaURL);
-  const cacheOverride = new CacheOverride("pass");
+async function handleCaptchaRequest(req, secret, staticParam) {
+  // Extract the user's response from the POST body and verify it with the CAPTCHA API.
+  const reqBody = await req.text();
+  const response = reqBody.split("=")[1];
+  if (response === undefined) {
+    return false;
+  }
+
+  // Build a POST request to the captcha API and verify the user's response
+  const headers = new Headers();
+  headers.set("Content-Type", "application/x-www-form-urlencoded");
+  const body = `secret=${secret}&response=${response}`;
+  const captchaReq = new Request(staticParam.siteVerifyURL, {
+    method: "POST",
+    headers,
+    body,
+  });
 
   console.log("Sending to CAPTCHA API to verify");
   let res = await fetch(captchaReq, {
-    backend: "captcha_backend",
-    cacheOverride,
+    backend: staticParam.backend,
   });
 
   const result = await res.json();
+  console.log(JSON.stringify(result));
   return result.success || false;
 }

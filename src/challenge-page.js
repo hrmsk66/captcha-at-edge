@@ -1,8 +1,10 @@
+export default function generateChallengePage(siteKey, staticParam) {
+  return `
 <html>
   <head>
     <title>CAPTCHA challenge</title>
     <link rel="icon" href="https://developer.fastly.com/favicon-32x32.png" type="image/png" />
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="${staticParam.scriptURL}" async defer></script>
     <style>
       .container {
         display: grid;
@@ -16,7 +18,7 @@
         margin-bottom: 30px;
       }
 
-      .g-recaptcha {
+      .h-captcha {
         width: 300px;
       }
 
@@ -74,10 +76,11 @@
         </svg>
       </div>
       <form action="?captcha=true" method="POST">
-        <div class="g-recaptcha" data-sitekey="{your_site_key}"></div>
+        <div class="${staticParam.class}" data-sitekey="${siteKey}"></div>
         <br />
         <input class="submit-btn" type="submit" value="Submit" />
       </form>
     </div>
   </body>
-</html>
+</html>`;
+}
