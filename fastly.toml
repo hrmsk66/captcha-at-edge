@@ -10,11 +10,50 @@ service_id = ""
 
 [local_server]
   [local_server.backends]
-    [local_server.backends.captcha_backend]
+    [local_server.backends.hcaptcha]
+      url = "https://hcaptcha.com"
+    [local_server.backends.recaptcha]
       url = "https://www.google.com"
+  [local_server.dictionaries]
     [local_server.dictionaries.captcha_config]
       format = "inline-toml"
-    [local_server.dictionaries.captcha_config.contents]
-      "shared_secret" = "XXX"
-      "recaptcha_secret_key" = "XXX"
-      "token_lifetime" = "86400"
+      [local_server.dictionaries.captcha_config.contents]
+        account0_secret_key = "XXX"
+        account0_site_key = "XXX"
+        account0_type = "XXX"
+        account1_secret_key = "XXX"
+        account1_site_key = "XXX"
+        account1_type = "XXX"
+        number_of_accounts = "X"
+        shared_secret = "XXX"
+        token_lifetime = "XXX"
+
+[setup]
+  [setup.backends]
+    [setup.backends.hcaptcha]
+      address = "hcaptcha.com"
+      port = 443
+    [setup.backends.recaptcha]
+      address = "www.google.com"
+      port = 443
+  [setup.dictionaries]
+    [setup.dictionaries.captcha_config]
+      [setup.dictionaries.captcha_config.items]
+        [setup.dictionaries.captcha_config.items.account0_secret_key]
+          value = "XXX"
+        [setup.dictionaries.captcha_config.items.account0_site_key]
+          value = "XXX"
+        [setup.dictionaries.captcha_config.items.account0_type]
+          value = "XXX"
+        [setup.dictionaries.captcha_config.items.account1_secret_key]
+          value = "XXX"
+        [setup.dictionaries.captcha_config.items.account1_site_key]
+          value = "XXX"
+        [setup.dictionaries.captcha_config.items.account1_type]
+          value = "XXX"
+        [setup.dictionaries.captcha_config.items.number_of_accounts]
+          value = "X"
+        [setup.dictionaries.captcha_config.items.shared_secret]
+          value = "XXX"
+        [setup.dictionaries.captcha_config.items.token_lifetime]
+          value = "XXX"
