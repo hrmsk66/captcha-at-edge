@@ -2,11 +2,36 @@ This README describes how to configure the VCL service to forward high-risk requ
 
 ## Installation
 
-1. Add the domain of the C@E app as an origin server named `captcha`. **Override host** must be set with the domain.
-
-2. Add a VCL snippet for token validation and select "init" as snippet type.
+1. Add a VCL snippet below and select "init" as snippet type. Replace `XXX` with the domain of the C@E service. Also replace `YYY` with the service ID of the VCL service.
 
 ```vcl
+# The backend definition for the Compute@Edge service
+backend F_captcha {
+    .bypass_local_route_table = true;
+    .always_use_host_header = true;
+    .between_bytes_timeout = 10s;
+    .connect_timeout = 1s;
+    .dynamic = true;
+    .first_byte_timeout = 15s;
+    .host = "XXX.edgecompute.app";
+    .host_header = "XXX.edgecompute.app";
+    .max_connections = 200;
+    .port = "443";
+    .share_key = "YYY";
+    .ssl = true;
+    .ssl_cert_hostname = "XXX.edgecompute.app";
+    .ssl_check_cert = always;
+    .ssl_sni_hostname = "XXX.edgecompute.app";
+    .probe = {
+        .dummy = true;
+        .initial = 5;
+        .request = "HEAD / HTTP/1.1"  "Host: XXX.edgecompute.app" "Connection: close";
+        .threshold = 1;
+        .timeout = 2s;
+        .window = 5;
+      }
+}
+
 # The token verification logic is based on the content of this page
 # https://docs.fastly.com/en/guides/enabling-url-token-validation
 
@@ -54,7 +79,7 @@ sub token_is_valid BOOL {
 }
 ```
 
-3. Add a VCL snippet to forward high-risk requests. Select **in subroutine** and **recv (vcl_recv)** for snippet type. Add conditions to the outer-if-block to determine that the request is high-risk.
+2. Add a VCL snippet to forward high-risk requests. Select **in subroutine** and **recv (vcl_recv)** for snippet type. Add conditions to the outer-if-block to determine that the request is high-risk.
 
 ```vcl
 # Add conditions to the outer-if-block to determine that the request is high-risk
@@ -68,7 +93,7 @@ if (fastly.ff.visits_this_service == 0 && req.request != "FASTLYPURGE") {
 }
 ```
 
-4. Create a new dictionary named `captcha_config`. Add the following entry to the dictionary.
+3. Create a new dictionary named `captcha_config`. Add the following entry to the dictionary.
 
 | Key           | Description                                                          |
 | ------------- | -------------------------------------------------------------------- |
