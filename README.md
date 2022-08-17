@@ -14,7 +14,7 @@ This app uses Google reCAPTCHA V2 or hCaptcha or both, you need to sign up for a
 
 _It is not necessary to register each subdomain. A registration for `example.com` also registers `subdomain.example.com`_
 
-### Limitation of the captcha services
+### Limitation of the free captcha services
 
 Both reCAPTCHA and hCaptcha are limited to 1,000 requests per second and 1,000,000 requests per month in the free version.
 
