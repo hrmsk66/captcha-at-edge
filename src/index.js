@@ -39,7 +39,7 @@ async function handleRequest(event) {
     if (isPass) {
       // It's a pass! Set a cookie, so that this user is not challenged again within the token lifetime
       // If isPass is false, fall through to the remainder of the function and redisplay the CAPTCHA page
-      console.log("It's a pass! returning a response with a token set in the session cookie");
+      console.log("It's a pass! returning a response with a token set in the cookie");
 
       // Generate token
       const tokenLifetime = captchaConfig.get("token_lifetime");
