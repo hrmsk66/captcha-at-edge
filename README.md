@@ -184,9 +184,9 @@ sequenceDiagram
     participant C@E
     participant reCAPTCHA
     participant Origin
-    Client->>VCL: Request without session cookie
+    Client->>VCL: Request without cookie
     VCL->>VCL: Determine high-risk request or not<br/>Forward high-risk request to C@E
-    VCL->>C@E: Request without session cookie
+    VCL->>C@E: Request without cookie
     C@E->>VCL: Challenge page
     VCL->>Client: Challenge page
     Client->>VCL: Challenge response
@@ -196,7 +196,7 @@ sequenceDiagram
     C@E->>C@E: Generate a session-token
     C@E->>VCL: Sends the session-token as a cookie
     VCL->>Client: Sends the session-token as a cookie
-    Client->>VCL: Request with session cookie
+    Client->>VCL: Request with cookie
     VCL->>VCL: Validate the token and token expiration (success)
     VCL->>Origin: Allowed to access content
     Origin->>VCL: Content
