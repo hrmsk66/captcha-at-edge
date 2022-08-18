@@ -90,7 +90,7 @@ Jul 24 15:43:59.911  INFO request{id=0}: request completed using 14.8 MB of WebA
 Jul 24 15:43:59.911  INFO request{id=0}: request completed in 18.089791ms
 Jul 24 15:44:17.040  INFO request{id=1}: handling request POST http://127.0.0.1:7676/?captcha=true
 Log: Sending to CAPTCHA API to verify
-Log: It's a pass! returning a response with a token set in the session cookie <<
+Log: It's a pass! returning a response with a token set in the cookie <<
 ```
 
 ### Publish the project to a new Fastly service
